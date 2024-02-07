@@ -12,6 +12,8 @@ import java.util.UUID;
 @Getter
 public class Pagina {
 
+    @Id
+    @GeneratedValue
     private UUID id;
     private String titolo;
     private String descrizione;

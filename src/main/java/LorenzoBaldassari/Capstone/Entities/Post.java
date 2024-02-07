@@ -1,10 +1,7 @@
 package LorenzoBaldassari.Capstone.Entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -17,6 +14,8 @@ import java.util.UUID;
 @Getter
 public class Post {
 
+    @Id
+    @GeneratedValue
     private UUID uuid;
     private String titolo;
     private String contenuto;

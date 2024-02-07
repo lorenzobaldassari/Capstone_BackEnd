@@ -1,10 +1,7 @@
 package LorenzoBaldassari.Capstone.Security;
-
-import BaldassariLorenzo.Project.Entities.Utente;
-import BaldassariLorenzo.Project.Exceptions.UnauthorizedException;
-import BaldassariLorenzo.Project.Services.UtenteService;
 import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.UnauthorizedException;
+import LorenzoBaldassari.Capstone.Servicies.UtenteService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,7 +36,7 @@ public class JWTAAutfilther extends OncePerRequestFilter {
 
 
             String id = jwtTools.extractIdFromToken(accessToken);
-            Utente utente= utenteService.findById(UUID.fromString(id));
+            Utente utente= utenteService.findByUUID(UUID.fromString(id));
 
 
             Authentication authentication= new UsernamePasswordAuthenticationToken(utente,null,utente.getAuthorities());

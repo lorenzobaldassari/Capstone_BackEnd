@@ -13,7 +13,9 @@ import java.util.List;
 @Getter
 public class Docente extends Utente{
 
+    @Enumerated(EnumType.STRING)
     private Grado grado;
+    @Enumerated(EnumType.STRING)
     private Materia materia;
 
     @JsonIgnore

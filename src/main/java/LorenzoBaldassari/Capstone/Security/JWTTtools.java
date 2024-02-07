@@ -1,7 +1,7 @@
 package LorenzoBaldassari.Capstone.Security;
 
-import BaldassariLorenzo.Project.Entities.Utente;
-import BaldassariLorenzo.Project.Exceptions.UnauthorizedException;
+import LorenzoBaldassari.Capstone.Entities.Utente;
+import LorenzoBaldassari.Capstone.Exceptions.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,7 @@ public class JWTTtools {
     @Value("${spring.jwt.secret}")
     private String secret;
     public String createToken(Utente utente){
-        return Jwts.builder().subject(String.valueOf(utente.getUuid()))
+        return Jwts.builder().subject(String.valueOf(utente.getUtente_uuid()))
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
