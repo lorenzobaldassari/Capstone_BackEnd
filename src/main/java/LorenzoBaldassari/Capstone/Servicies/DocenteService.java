@@ -25,17 +25,7 @@ public class DocenteService {
         return docenteRepository.findAll();
     }
 
-    public UtenteRespondDto create(DocenteRequestDto body){
-        Docente docente= new Docente();
-        docente.setNome(body.nome());
-        docente.setCognome(body.cognome());
-        docente.setEmail(body.email());
-        docente.setPassword(bcrypt.encode(body.password()));
-        docente.setImmagine_di_profilo("https://res.cloudinary.com/dxmrdw4i7/image/upload/v1707323085/blank-profile-picture-973460_640_1_dqhavj.webp");
-        docente.setRuolo(Ruolo.USER);
-        docenteRepository.save(docente);
-        return new UtenteRespondDto(docente.getUtente_uuid(),docente.getNome());
-    }
+
 
     public Docente findByUUID(UUID uuid){
         return docenteRepository.findById(uuid).orElseThrow(()->new ItemNotFoundException(uuid));
