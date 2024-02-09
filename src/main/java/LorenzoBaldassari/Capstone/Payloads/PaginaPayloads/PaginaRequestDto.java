@@ -1,5 +1,6 @@
 package LorenzoBaldassari.Capstone.Payloads.PaginaPayloads;
 
+import LorenzoBaldassari.Capstone.Entities.Utente;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.lang.Nullable;
 

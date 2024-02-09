@@ -3,6 +3,7 @@ package LorenzoBaldassari.Capstone.Entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,8 +29,13 @@ public class Pagina {
     @OneToMany(mappedBy = "paginaPost")
     List<Post> listaDiPostDellaPagina;
 
+    public void setUtentePagina(Utente utentePagina) {
+        this.utentePagina = utentePagina;
+    }
+
     @JsonIgnore
     @ManyToMany(mappedBy = "listaDiPagine")
+
 
     public void setTitolo(String titolo) {
         this.titolo = titolo;

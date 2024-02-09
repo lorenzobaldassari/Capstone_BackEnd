@@ -43,4 +43,9 @@ public class ExceptionHandler {
     public ErrorDto handleItemNotFound(Exception ex) {
         return new ErrorDto(ex.getMessage(), LocalDateTime.now());
     }
+    @org.springframework.web.bind.annotation.ExceptionHandler(NotYourPageException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorDto handleNotYourPage(Exception ex) {
+        return new ErrorDto(ex.getMessage(), LocalDateTime.now());
+    }
 }
