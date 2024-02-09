@@ -40,7 +40,7 @@ public class AuthController {
             System.err.println(bindingResult.getAllErrors());
             throw new BadRequestException("errore nel invio del payload per il metodo POST"+bindingResult.getAllErrors());
         } else {
-            return authService.create(body);
+            return authService.createDocente(body);
         }
     }
     @PostMapping("/login")

@@ -27,14 +27,14 @@ public class UtenteService {
 
 
     public Utente findByEmail(String email){
-        return utenteRepository.findByEmail(email).orElseThrow(()->new EmailAlreadyInDbException(email));
+        return utenteRepository.findByEmail(email).orElseThrow(()->new ItemNotFoundException(email));
     }
 
     public Utente findByUUID(UUID uuid){
         return utenteRepository.findById(uuid).orElseThrow(()->new ItemNotFoundException(uuid));
     }
 
-    public UtenteRespondDto modify(UtenteModifyByAdminRequestDto body, UUID uuid){
+    public UtenteRespondDto modifyByAdmin(UtenteModifyByAdminRequestDto body, UUID uuid){
         Optional<Utente> email= utenteRepository.findByEmail(body.email());
         Utente utente= this.findByUUID(uuid);
         if(email.isEmpty() || utente.getEmail().equals(body.email()))
@@ -43,14 +43,16 @@ public class UtenteService {
         utente.setCognome(body.cognome());
         utente.setEmail(body.email());
         utente.setPassword((utente.getPassword()));
-        utente.setImmagine_di_profilo("https://res.cloudinary.com/dxmrdw4i7/image/upload/v1707323085/blank-profile-picture-973460_640_1_dqhavj.webp");
-        utente.setRuolo(Ruolo.USER);
+        utente.setRuolo(body.ruolo());
         utenteRepository.save(utente);
         return  new UtenteRespondDto(utente.getUtente_uuid(),utente.getNome());
         }else{
             throw new EmailAlreadyInDbException(body.email());
         }
     }
+
+
+
 
     public void delete (UUID uuid){
        utenteRepository.delete(this.findByUUID(uuid));

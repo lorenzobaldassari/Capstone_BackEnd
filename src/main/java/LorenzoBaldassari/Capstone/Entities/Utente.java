@@ -84,9 +84,11 @@ public class Utente implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
-        return null;
+        return this.nome;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

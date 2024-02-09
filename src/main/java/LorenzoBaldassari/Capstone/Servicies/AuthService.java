@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -28,6 +29,8 @@ public class AuthService {
     @Autowired
     private DocenteRepository docenteRepository;
 
+    @Autowired
+    private DocenteService docenteService;
     @Autowired
     private JWTTtools jwtTtools;
     @Autowired
@@ -60,15 +63,57 @@ public class AuthService {
         }
     }
 
-    public UtenteRespondDto create(DocenteRequestDto body){
+    public UtenteRespondDto createDocente(DocenteRequestDto body){
         Docente docente= new Docente();
+
+        Optional<Utente> email= utenteRepository.findByEmail(body.email());
+        if(email.isEmpty()){
+
         docente.setNome(body.nome());
         docente.setCognome(body.cognome());
         docente.setEmail(body.email());
         docente.setPassword(bcrypt.encode(body.password()));
         docente.setImmagine_di_profilo("https://res.cloudinary.com/dxmrdw4i7/image/upload/v1707323085/blank-profile-picture-973460_640_1_dqhavj.webp");
         docente.setRuolo(Ruolo.USER);
+        docente.setGrado(body.grado());
+        docente.setMateria(body.materia());
         docenteRepository.save(docente);
         return new UtenteRespondDto(docente.getUtente_uuid(),docente.getNome());
+        }else{
+            throw new EmailAlreadyInDbException(body.email());
+        }
+    }
+
+    public UtenteRespondDto modifyByMe(UtenteRequestDto body, UUID uuid){
+        Optional<Utente> email= utenteRepository.findByEmail(body.email());
+        Utente utente= utenteService.findByUUID(uuid);
+        if(email.isEmpty() || utente.getEmail().equals(body.email()))
+        {
+            utente.setNome(body.nome());
+            utente.setCognome(body.cognome());
+            utente.setEmail(body.email());
+            utente.setPassword(bcrypt.encode(body.password()));
+            utenteRepository.save(utente);
+            return  new UtenteRespondDto(utente.getUtente_uuid(),utente.getNome());
+        }else{
+            throw new EmailAlreadyInDbException(body.email());
+        }
+    }
+
+    public UtenteRespondDto modifyDocenteByMe(DocenteRequestDto body, UUID uuid){
+        Docente docente= docenteService.findByUUID(uuid);
+        Optional<Docente> email= docenteRepository.findByEmail(body.email());
+        if(email.isEmpty() || body.email().equals(docente.getEmail())) {
+            docente.setNome(body.nome());
+            docente.setCognome(body.cognome());
+            docente.setEmail(body.email());
+            docente.setPassword(bcrypt.encode(body.password()));
+            docente.setGrado(body.grado());
+            docente.setMateria(body.materia());
+            docenteRepository.save(docente);
+            return new UtenteRespondDto(docente.getUtente_uuid(), docente.getNome());
+        }else {
+            throw  new EmailAlreadyInDbException(body.email());
+        }
     }
 }
