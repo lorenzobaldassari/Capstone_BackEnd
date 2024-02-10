@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "pagine")
 @Getter
-public class Pagina {
+public class Pagina extends Proprietario{
 
     @Id
     @GeneratedValue

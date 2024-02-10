@@ -48,6 +48,14 @@ public class Post {
         this.data = data;
     }
 
+    public void setUtentePost(Utente utentePost) {
+        this.utentePost = utentePost;
+    }
+
+    public void setPaginaPost(Pagina paginaPost) {
+        this.paginaPost = paginaPost;
+    }
+
     @Override
     public String toString() {
         return "Post{" +

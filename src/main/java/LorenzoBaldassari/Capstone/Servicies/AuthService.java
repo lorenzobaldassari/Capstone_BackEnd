@@ -101,8 +101,10 @@ public class AuthService {
             throw new EmailAlreadyInDbException(body.email());
         }
     }
-    public PaginaRespondDto create(PaginaRequestDto body, Utente currentUser){
+    public PaginaRespondDto createPagina(PaginaRequestDto body, Utente currentUser){
         Pagina pagina= new Pagina();
+        Optional<Pagina> email= paginaRepositoy.findByEmail(body.email());
+        if(email.isEmpty()){
         pagina.setTitolo(body.titolo());
         pagina.setDescrizione(body.descrizione());
         pagina.setImmagine("https://res.cloudinary.com/dxmrdw4i7/image/upload/v1707323085/blank-profile-picture-973460_640_1_dqhavj.webp");
@@ -111,7 +113,10 @@ public class AuthService {
         pagina.setEmail(body.email());
         pagina.setPassword(bcrypt.encode(body.password()));
         paginaRepositoy.save(pagina);
-        return new PaginaRespondDto(pagina.getTitolo(),pagina.getId());
+        return new PaginaRespondDto(pagina.getDescrizione(),pagina.getId());
+    }else{
+            throw new EmailAlreadyInDbException(body.email());
+        }
     }
 
     public UtenteRespondDto modifyByMe(UtenteRequestDto body, UUID uuid){
@@ -145,5 +150,9 @@ public class AuthService {
         }else {
             throw  new EmailAlreadyInDbException(body.email());
         }
+    }
+
+    public void test(){
+        System.err.println("errore qui");
     }
 }

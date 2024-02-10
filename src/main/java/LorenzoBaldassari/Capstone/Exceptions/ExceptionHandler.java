@@ -43,9 +43,14 @@ public class ExceptionHandler {
     public ErrorDto handleItemNotFound(Exception ex) {
         return new ErrorDto(ex.getMessage(), LocalDateTime.now());
     }
-    @org.springframework.web.bind.annotation.ExceptionHandler(NotYourPageException.class)
+    @org.springframework.web.bind.annotation.ExceptionHandler(NotYourPostException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorDto handleNotYourPage(Exception ex) {
+        return new ErrorDto(ex.getMessage(), LocalDateTime.now());
+    }
+    @org.springframework.web.bind.annotation.ExceptionHandler(OwnerNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDto handleOwnerNotFoundException(Exception ex) {
         return new ErrorDto(ex.getMessage(), LocalDateTime.now());
     }
 }

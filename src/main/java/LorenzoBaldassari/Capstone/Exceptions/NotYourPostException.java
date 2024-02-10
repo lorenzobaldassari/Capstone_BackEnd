@@ -1,8 +1,8 @@
 package LorenzoBaldassari.Capstone.Exceptions;
 
-public class NotYourPageException extends RuntimeException{
+public class NotYourPostException extends RuntimeException{
 
-    public NotYourPageException(){
+    public NotYourPostException(){
         super("non sei il proprietario della pagina, non hai aceeso a questa funzione!");
     }
 }

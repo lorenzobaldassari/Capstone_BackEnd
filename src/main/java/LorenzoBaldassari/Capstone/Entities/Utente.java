@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Getter
 @JsonIgnoreProperties({"password", "authorities", "accountNonExpired",
         "enabled", "accountNonLocked", "credentialsNonExpired"})
-public class Utente implements UserDetails {
+public class Utente extends Proprietario implements UserDetails {
 
     @Id
     @GeneratedValue

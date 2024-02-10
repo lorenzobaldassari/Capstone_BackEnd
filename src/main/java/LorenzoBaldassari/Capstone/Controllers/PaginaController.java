@@ -7,12 +7,10 @@ import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRespondDto;
 import LorenzoBaldassari.Capstone.Servicies.AuthService;
 import LorenzoBaldassari.Capstone.Servicies.PaginaService;
-import jakarta.servlet.annotation.HttpConstraint;
-import org.apache.http.conn.util.PublicSuffixList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,20 +30,17 @@ public class PaginaController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Pagina> findAll(){
+        authService.test();
         return paginaService.findAll();
+
     }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private PaginaRespondDto create(@RequestBody @Validated PaginaRequestDto body,
-                                    BindingResult bindingResult,
-                                    @AuthenticationPrincipal Utente currentUser){
-        if (bindingResult.hasErrors()) {
-            System.err.println(bindingResult.getAllErrors());
-            throw new BadRequestException("errore nel invio del payload per il metodo PUT"+bindingResult.getAllErrors());
-        }else {
-            return authService.create(body,currentUser);
-        }
+    public PaginaRespondDto createPagina(@RequestBody @Validated PaginaRequestDto body,
+                                         @AuthenticationPrincipal Utente currentUser){
+        return authService.createPagina(body, currentUser);
     }
 
     @GetMapping("/{uuid}")
@@ -72,7 +67,8 @@ public class PaginaController {
                        @AuthenticationPrincipal Pagina currentUser){
         paginaService.delete(currentUser.getId());
     }
-    @DeleteMapping("/admin/{uuid}")
+    @DeleteMapping("/{uuid}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByAdmin(@PathVariable UUID uuid){
         paginaService.deleteByAdmin(uuid);
