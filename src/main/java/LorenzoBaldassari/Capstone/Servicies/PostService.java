@@ -51,28 +51,32 @@ public class PostService {
     public PostRespondDto modifyByMe(PostRequestDto body, UUID uuid, Proprietario currentUser){
         Post post= this.findByUUID(uuid);
         if(currentUser instanceof Utente){
-            if (((Utente) currentUser).getUtente_uuid().equals(post.getUtentePost().getUtente_uuid())){
-                post.setTitolo(body.titolo());
-                post.setContenuto(body.contenuto());
-                post.setData(LocalDateTime.now());
-                post.setImmagine(body.immagine());
-                postRepository.save(post);
-                return new PostRespondDto(post.getUuid(),post.getTitolo());
-            }else{
-                throw new NotYourPostException();
-            }
+            if (post.getUtentePost()!=null){
+                if (((Utente) currentUser).getUtente_uuid().equals(post.getUtentePost().getUtente_uuid())){
+                    post.setTitolo(body.titolo());
+                    post.setContenuto(body.contenuto());
+                    post.setData(LocalDateTime.now());
+                    post.setImmagine(body.immagine());
+                    postRepository.save(post);
+                    return new PostRespondDto(post.getUuid(),post.getTitolo());
+                }else{
+                    throw new NotYourPostException();
+                }
+            }else{throw new OwnerNotFoundException();}
         }
         else if(currentUser instanceof Pagina){
-            if (((Pagina) currentUser).getId().equals(post.getPaginaPost().getId())){
-                post.setTitolo(body.titolo());
-                post.setContenuto(body.contenuto());
-                post.setData(LocalDateTime.now());
-                post.setImmagine(body.immagine());
-                postRepository.save(post);
-                return new PostRespondDto(post.getUuid(),post.getTitolo());
-            }else{
-                throw new NotYourPostException();
-            }
+                if(post.getPaginaPost()!=null){
+                    if (((Pagina) currentUser).getId().equals(post.getPaginaPost().getId())){
+                        post.setTitolo(body.titolo());
+                        post.setContenuto(body.contenuto());
+                        post.setData(LocalDateTime.now());
+                        post.setImmagine(body.immagine());
+                        postRepository.save(post);
+                        return new PostRespondDto(post.getUuid(),post.getTitolo());
+                    }else{
+                        throw new NotYourPostException();
+                    }
+                }else{ throw new NotYourPostException();}
         }
         else{
             throw new OwnerNotFoundException();
@@ -86,18 +90,22 @@ public class PostService {
     public void deleteByMe(UUID uuid,Proprietario currentUser){
         Post post= this.findByUUID(uuid);
         if(currentUser instanceof Utente){
-            if (((Utente) currentUser).getUtente_uuid().equals(post.getUtentePost().getUtente_uuid())) {
-                postRepository.delete(post);
-            }else{
-                throw new NotYourPostException();
-            }
+            if (post.getUtentePost()!=null){
+                if (((Utente) currentUser).getUtente_uuid().equals(post.getUtentePost().getUtente_uuid())) {
+                    postRepository.delete(post);
+                }else{
+                    throw new NotYourPostException();
+                }
+            }else{throw new NotYourPostException();}
         }
         else if(( currentUser instanceof Pagina)){
-            if (((Pagina) currentUser).getId().equals(post.getPaginaPost().getId())) {
-                postRepository.delete(post);
-            }else{
-                throw new NotYourPostException();
-            }
+            if(post.getPaginaPost()!=null){
+                if (((Pagina) currentUser).getId().equals(post.getPaginaPost().getId())) {
+                    postRepository.delete(post);
+                }else{
+                    throw new NotYourPostException();
+                }
+            }else{throw new NotYourPostException();}
     }
         else {
         throw new NotYourPostException();
