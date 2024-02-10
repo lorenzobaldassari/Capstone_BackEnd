@@ -5,6 +5,7 @@ import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.BadRequestException;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRespondDto;
+import LorenzoBaldassari.Capstone.Servicies.AuthService;
 import LorenzoBaldassari.Capstone.Servicies.PaginaService;
 import jakarta.servlet.annotation.HttpConstraint;
 import org.apache.http.conn.util.PublicSuffixList;
@@ -25,6 +26,8 @@ public class PaginaController {
 
     @Autowired
     private PaginaService paginaService;
+    @Autowired
+    private AuthService authService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -41,7 +44,7 @@ public class PaginaController {
             System.err.println(bindingResult.getAllErrors());
             throw new BadRequestException("errore nel invio del payload per il metodo PUT"+bindingResult.getAllErrors());
         }else {
-            return paginaService.create(body,currentUser);
+            return authService.create(body,currentUser);
         }
     }
 
@@ -50,25 +53,24 @@ public class PaginaController {
     public Pagina findByUUID(@PathVariable UUID uuid){
         return paginaService.findByUUID(uuid);
     }
-    @PutMapping("/{uuid}")
+    @PutMapping("/me")
     @ResponseStatus(HttpStatus.OK)
     public PaginaRespondDto findByUUID(@RequestBody @Validated PaginaRequestDto body,
-                                       @PathVariable UUID uuid,
                                        BindingResult bindingResult,
-                                       @AuthenticationPrincipal Utente currentUser){
+                                       @AuthenticationPrincipal Pagina currentUser){
         if (bindingResult.hasErrors()) {
             System.err.println(bindingResult.getAllErrors());
             throw new BadRequestException("errore nel invio del payload per il metodo PUT"+bindingResult.getAllErrors());
         }else {
-            return paginaService.modify(body,uuid,currentUser);
+            return paginaService.modify(body,currentUser.getId());
         }
     }
 
-    @DeleteMapping("/{uuid}")
+    @DeleteMapping("/me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable UUID uuid,
-                       @AuthenticationPrincipal Utente currentUser){
-        paginaService.delete(uuid,currentUser);
+    public void delete(
+                       @AuthenticationPrincipal Pagina currentUser){
+        paginaService.delete(currentUser.getId());
     }
     @DeleteMapping("/admin/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

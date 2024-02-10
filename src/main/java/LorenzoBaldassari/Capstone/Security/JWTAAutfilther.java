@@ -1,6 +1,9 @@
 package LorenzoBaldassari.Capstone.Security;
+import LorenzoBaldassari.Capstone.Entities.Pagina;
 import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.UnauthorizedException;
+import LorenzoBaldassari.Capstone.Repositories.UtenteRepository;
+import LorenzoBaldassari.Capstone.Servicies.PaginaService;
 import LorenzoBaldassari.Capstone.Servicies.UtenteService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,6 +18,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -23,6 +27,10 @@ public class JWTAAutfilther extends OncePerRequestFilter {
     private JWTTtools jwtTools;
     @Autowired
     private UtenteService utenteService;
+    @Autowired
+    private UtenteRepository utenteRepository;
+    @Autowired
+    private PaginaService paginaService;
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -36,20 +44,27 @@ public class JWTAAutfilther extends OncePerRequestFilter {
 
 
             String id = jwtTools.extractIdFromToken(accessToken);
-            Utente utente= utenteService.findByUUID(UUID.fromString(id));
-
-
-            Authentication authentication= new UsernamePasswordAuthenticationToken(utente,null,utente.getAuthorities());
+            Optional<Utente> utente= utenteRepository.findById(UUID.fromString(id));
+            if (!utente.isEmpty()){
+                Utente utente1=utenteService.findByUUID(UUID.fromString(id));
+            Authentication authentication= new UsernamePasswordAuthenticationToken(utente1,null,utente1.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            }else{
+              Pagina pagina= paginaService.findByUUID((UUID.fromString(id)));
+                Authentication authentication= new UsernamePasswordAuthenticationToken(pagina,null,null);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+
 
             filterChain.doFilter(request,response);
 
         }
     }
+
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        // Questo metodo serve per specificare quando il filtro NON deve entrare in azione
-        // Ad esempio tutte le richieste al controller /auth non devono essere controllate dal filtro
 
         return new AntPathMatcher().match("/auth/**", request.getServletPath());
     }

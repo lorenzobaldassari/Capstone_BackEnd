@@ -1,5 +1,6 @@
 package LorenzoBaldassari.Capstone.Security;
 
+import LorenzoBaldassari.Capstone.Entities.Pagina;
 import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
@@ -16,6 +17,13 @@ public class JWTTtools {
     private String secret;
     public String createToken(Utente utente){
         return Jwts.builder().subject(String.valueOf(utente.getUtente_uuid()))
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
+                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .compact();
+    }
+    public String createTokenPagina(Pagina pagina){
+        return Jwts.builder().subject(String.valueOf(pagina.getId()))
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))

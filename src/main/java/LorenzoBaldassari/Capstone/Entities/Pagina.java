@@ -3,7 +3,6 @@ package LorenzoBaldassari.Capstone.Entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +19,10 @@ public class Pagina {
     private String descrizione;
     private String immagine;
     private String link_sito;
+    private String email;
+    @JsonIgnore
+    private String password;
+
 
     @ManyToOne
     @JoinColumn(name = "id_utente_proprietario")
@@ -28,13 +31,21 @@ public class Pagina {
     @JsonIgnore
     @OneToMany(mappedBy = "paginaPost")
     List<Post> listaDiPostDellaPagina;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "listaDiPagine")
 
     public void setUtentePagina(Utente utentePagina) {
         this.utentePagina = utentePagina;
     }
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "listaDiPagine")
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
 
     public void setTitolo(String titolo) {

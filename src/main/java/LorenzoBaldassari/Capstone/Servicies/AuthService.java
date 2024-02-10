@@ -2,14 +2,18 @@ package LorenzoBaldassari.Capstone.Servicies;
 
 import LorenzoBaldassari.Capstone.Entities.Docente;
 import LorenzoBaldassari.Capstone.Entities.Enum.Ruolo;
+import LorenzoBaldassari.Capstone.Entities.Pagina;
 import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.EmailAlreadyInDbException;
 import LorenzoBaldassari.Capstone.Exceptions.UnauthorizedException;
 import LorenzoBaldassari.Capstone.Payloads.AuthPayloads.AuthRequestDTO;
 import LorenzoBaldassari.Capstone.Payloads.DocentePayloads.DocenteRequestDto;
+import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRequestDto;
+import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRespondDto;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRespondDto;
 import LorenzoBaldassari.Capstone.Repositories.DocenteRepository;
+import LorenzoBaldassari.Capstone.Repositories.PaginaRepositoy;
 import LorenzoBaldassari.Capstone.Repositories.UtenteRepository;
 import LorenzoBaldassari.Capstone.Security.JWTTtools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +39,26 @@ public class AuthService {
     private JWTTtools jwtTtools;
     @Autowired
     private UtenteRepository utenteRepository;
+    @Autowired
+    private PaginaRepositoy paginaRepositoy;
+    @Autowired
+    private PaginaService paginaService;
 
     public String authenticateUser(AuthRequestDTO body){
         Utente utente=  utenteService.findByEmail(body.email());
         if (bcrypt.matches(body.password(), utente.getPassword())) {
             return jwtTtools.createToken(utente);
-        } else {
+        }
+        else {
+            throw new UnauthorizedException("Credenziali non valide!");
+        }
+    }
+    public String authenticatePagina(AuthRequestDTO body){
+        Pagina pagina= paginaService.findByEmail(body.email());
+        if (bcrypt.matches(body.password(), pagina.getPassword())) {
+            return jwtTtools.createTokenPagina(pagina);
+        }
+        else {
             throw new UnauthorizedException("Credenziali non valide!");
         }
     }
@@ -82,6 +100,18 @@ public class AuthService {
         }else{
             throw new EmailAlreadyInDbException(body.email());
         }
+    }
+    public PaginaRespondDto create(PaginaRequestDto body, Utente currentUser){
+        Pagina pagina= new Pagina();
+        pagina.setTitolo(body.titolo());
+        pagina.setDescrizione(body.descrizione());
+        pagina.setImmagine("https://res.cloudinary.com/dxmrdw4i7/image/upload/v1707323085/blank-profile-picture-973460_640_1_dqhavj.webp");
+        pagina.setLink_sito(body.link_sito());
+        pagina.setUtentePagina(currentUser);
+        pagina.setEmail(body.email());
+        pagina.setPassword(bcrypt.encode(body.password()));
+        paginaRepositoy.save(pagina);
+        return new PaginaRespondDto(pagina.getTitolo(),pagina.getId());
     }
 
     public UtenteRespondDto modifyByMe(UtenteRequestDto body, UUID uuid){

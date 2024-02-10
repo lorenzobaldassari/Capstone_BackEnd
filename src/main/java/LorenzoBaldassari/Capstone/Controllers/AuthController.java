@@ -1,8 +1,12 @@
 package LorenzoBaldassari.Capstone.Controllers;
 
+import LorenzoBaldassari.Capstone.Entities.Pagina;
+import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.BadRequestException;
 import LorenzoBaldassari.Capstone.Payloads.AuthPayloads.AuthRequestDTO;
 import LorenzoBaldassari.Capstone.Payloads.DocentePayloads.DocenteRequestDto;
+import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRequestDto;
+import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRespondDto;
 import LorenzoBaldassari.Capstone.Payloads.TokenPayloads.TokenRespondPaylaod;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRespondDto;
@@ -49,4 +53,11 @@ public class AuthController {
         return new TokenRespondPaylaod(accessToken);
 
     }
+    @PostMapping("/login/pagine")
+    public TokenRespondPaylaod getTokenPagina(@RequestBody AuthRequestDTO body){
+        String accessToken= authService.authenticatePagina(body);
+        return new TokenRespondPaylaod(accessToken);
+
+    }
+
 }
