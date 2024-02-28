@@ -31,14 +31,12 @@ public class UtenteController {
     private AuthService authService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<Utente> getAll(){
         return utenteService.getAll();
     }
 
     @GetMapping("/{uuid}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public Utente findById(@PathVariable UUID uuid){
         return utenteService.findByUUID(uuid);

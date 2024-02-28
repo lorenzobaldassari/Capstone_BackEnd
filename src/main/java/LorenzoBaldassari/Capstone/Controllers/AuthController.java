@@ -49,14 +49,14 @@ public class AuthController {
     }
     @PostMapping("/login")
     public TokenRespondPaylaod getToken(@RequestBody AuthRequestDTO body){
-        String accessToken= authService.authenticateUser(body);
-        return new TokenRespondPaylaod(accessToken);
+        TokenRespondPaylaod accessToken= authService.authenticateUser(body);
+        return (accessToken);
 
     }
     @PostMapping("/login/pagine")
     public TokenRespondPaylaod getTokenPagina(@RequestBody AuthRequestDTO body){
-        String accessToken= authService.authenticatePagina(body);
-        return new TokenRespondPaylaod(accessToken);
+        TokenRespondPaylaod accessToken= authService.authenticatePagina(body);
+        return  accessToken;
 
     }
 

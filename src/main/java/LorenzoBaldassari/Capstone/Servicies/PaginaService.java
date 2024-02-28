@@ -2,6 +2,7 @@ package LorenzoBaldassari.Capstone.Servicies;
 import LorenzoBaldassari.Capstone.Entities.Pagina;
 import LorenzoBaldassari.Capstone.Exceptions.EmailAlreadyInDbException;
 import LorenzoBaldassari.Capstone.Exceptions.ItemNotFoundException;
+import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaModifyRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRespondDto;
 import LorenzoBaldassari.Capstone.Repositories.PaginaRepositoy;
@@ -31,7 +32,7 @@ public class PaginaService {
     public Pagina findByEmail(String email){
         return paginaRepositoy.findByEmail(email).orElseThrow(()->new ItemNotFoundException(email));
     }
-    public PaginaRespondDto modify(PaginaRequestDto body, UUID uuid){
+    public PaginaRespondDto modify(PaginaModifyRequestDto body, UUID uuid){
         Pagina pagina= this.findByUUID(uuid);
         Optional<Pagina> email= paginaRepositoy.findByEmail(body.email());
         if(email.isEmpty()  ||  pagina.getEmail().equals(body.email())){

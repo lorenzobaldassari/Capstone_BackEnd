@@ -10,6 +10,7 @@ import LorenzoBaldassari.Capstone.Payloads.AuthPayloads.AuthRequestDTO;
 import LorenzoBaldassari.Capstone.Payloads.DocentePayloads.DocenteRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRespondDto;
+import LorenzoBaldassari.Capstone.Payloads.TokenPayloads.TokenRespondPaylaod;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRespondDto;
 import LorenzoBaldassari.Capstone.Repositories.DocenteRepository;
@@ -44,19 +45,22 @@ public class AuthService {
     @Autowired
     private PaginaService paginaService;
 
-    public String authenticateUser(AuthRequestDTO body){
+    public TokenRespondPaylaod authenticateUser(AuthRequestDTO body){
         Utente utente=  utenteService.findByEmail(body.email());
         if (bcrypt.matches(body.password(), utente.getPassword())) {
-            return jwtTtools.createToken(utente);
+           String token= jwtTtools.createToken(utente);
+           return   new TokenRespondPaylaod(token,utente.getUtente_uuid(),"utente",
+                   utente.getNome(), utente.getCognome(), utente.getImmagine_di_profilo() );
         }
         else {
             throw new UnauthorizedException("Credenziali non valide!");
         }
     }
-    public String authenticatePagina(AuthRequestDTO body){
+    public TokenRespondPaylaod authenticatePagina(AuthRequestDTO body){
         Pagina pagina= paginaService.findByEmail(body.email());
         if (bcrypt.matches(body.password(), pagina.getPassword())) {
-            return jwtTtools.createTokenPagina(pagina);
+            String token= jwtTtools.createTokenPagina(pagina);
+            return   new TokenRespondPaylaod(token,pagina.getId(),"pagina",pagina.getTitolo(),"",pagina.getImmagine());
         }
         else {
             throw new UnauthorizedException("Credenziali non valide!");
@@ -72,7 +76,7 @@ public class AuthService {
         utente.setCognome(body.cognome());
         utente.setEmail(body.email());
         utente.setPassword(bcrypt.encode(body.password()));
-        utente.setImmagine_di_profilo("https://res.cloudinary.com/dxmrdw4i7/image/upload/v1707323085/blank-profile-picture-973460_640_1_dqhavj.webp");
+        utente.setImmagine_di_profilo("https://ui-avatars.com/api/?name=/" + utente.getNome() + "/"+"/" + utente.getCognome());
         utente.setRuolo(Ruolo.USER);
         utenteRepository.save(utente);
         return  new UtenteRespondDto(utente.getUtente_uuid(),utente.getNome());
@@ -91,7 +95,7 @@ public class AuthService {
         docente.setCognome(body.cognome());
         docente.setEmail(body.email());
         docente.setPassword(bcrypt.encode(body.password()));
-        docente.setImmagine_di_profilo("https://res.cloudinary.com/dxmrdw4i7/image/upload/v1707323085/blank-profile-picture-973460_640_1_dqhavj.webp");
+        docente.setImmagine_di_profilo("\"https://ui-avatars.com/api/?name=/\" + utente.getNome() + \"/\"+\"/\" + utente.getCognome()");
         docente.setRuolo(Ruolo.USER);
         docente.setGrado(body.grado());
         docente.setMateria(body.materia());
@@ -107,7 +111,7 @@ public class AuthService {
         if(email.isEmpty()){
         pagina.setTitolo(body.titolo());
         pagina.setDescrizione(body.descrizione());
-        pagina.setImmagine("https://res.cloudinary.com/dxmrdw4i7/image/upload/v1707323085/blank-profile-picture-973460_640_1_dqhavj.webp");
+        pagina.setImmagine("https://ui-avatars.com/api/?name=/" + pagina.getTitolo());
         pagina.setLink_sito(body.link_sito());
         pagina.setUtentePagina(currentUser);
         pagina.setEmail(body.email());

@@ -24,6 +24,12 @@ public class PostService {
     private PostRepository postRepository;
 
 
+    public List<Post> findAllUtenti(UUID uuid){
+        return postRepository.getPostCustom(uuid);
+    }
+    public List<Post> findAllPagine(UUID id){
+        return postRepository.getPostCustomPagine(id);
+    }
     public List<Post> findAll(){
         return postRepository.findAll();
     }
@@ -41,7 +47,7 @@ public class PostService {
             post.setPaginaPost((Pagina) proprietario);
         }
         postRepository.save(post);
-        return new PostRespondDto(post.getUuid(),post.getTitolo());
+        return new PostRespondDto(post.getUuid(),post.getTitolo_post());
     }
 
     public Post findByUUID(UUID uuid){
@@ -58,11 +64,11 @@ public class PostService {
                     post.setData(LocalDateTime.now());
                     post.setImmagine(body.immagine());
                     postRepository.save(post);
-                    return new PostRespondDto(post.getUuid(),post.getTitolo());
+                    return new PostRespondDto(post.getUuid(),post.getTitolo_post());
                 }else{
                     throw new NotYourPostException();
                 }
-            }else{throw new OwnerNotFoundException();}
+            }else{throw new NotYourPostException();}
         }
         else if(currentUser instanceof Pagina){
                 if(post.getPaginaPost()!=null){
@@ -72,7 +78,7 @@ public class PostService {
                         post.setData(LocalDateTime.now());
                         post.setImmagine(body.immagine());
                         postRepository.save(post);
-                        return new PostRespondDto(post.getUuid(),post.getTitolo());
+                        return new PostRespondDto(post.getUuid(),post.getTitolo_post());
                     }else{
                         throw new NotYourPostException();
                     }

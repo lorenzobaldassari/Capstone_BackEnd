@@ -7,6 +7,7 @@ import LorenzoBaldassari.Capstone.Payloads.PostPayloads.PostRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PostPayloads.PostRespondDto;
 import LorenzoBaldassari.Capstone.Servicies.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +33,16 @@ public class PostController {
     public List<Post> getAll(){
         return postService.findAll();
     }
+    @GetMapping("/utenti")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Post> getAll(@RequestParam(defaultValue = "")UUID uuid){
+        return postService.findAllUtenti(uuid);
+    }
+    @GetMapping("/pagine")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Post> getAllPagine(@RequestParam(defaultValue = "")UUID id){
+        return postService.findAllPagine(id);
+    }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PostRespondDto post(@RequestBody @Validated PostRequestDto body,
@@ -46,7 +58,7 @@ public class PostController {
 
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public Post findByUUID(@PathVariable UUID uuid) {
+    public Post findByUUID(@PathVariable UUID uuid){
     return postService.findByUUID(uuid);
     }
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -17,9 +18,9 @@ public class Post {
     @Id
     @GeneratedValue
     private UUID uuid;
-    private String titolo;
+    private String titolo_post;
     private String contenuto;
-    private String immagine;
+    private String immagine_post;
     private LocalDateTime data;
 
 
@@ -29,11 +30,13 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "id_pagina_pubblicazione")
     private Pagina paginaPost;
+//    @OneToMany(mappedBy = "post")
+//    List<Commento> listaDiCommenti;
 
 
 
     public void setTitolo(String titolo) {
-        this.titolo = titolo;
+        this.titolo_post = titolo;
     }
 
     public void setContenuto(String contenuto) {
@@ -41,7 +44,7 @@ public class Post {
     }
 
     public void setImmagine(String immagine) {
-        this.immagine = immagine;
+        this.immagine_post = immagine;
     }
 
     public void setData(LocalDateTime data) {
@@ -60,9 +63,9 @@ public class Post {
     public String toString() {
         return "Post{" +
                 "uuid=" + uuid +
-                ", titolo='" + titolo + '\'' +
+                ", titolo='" + titolo_post + '\'' +
                 ", contenuto='" + contenuto + '\'' +
-                ", immagine='" + immagine + '\'' +
+                ", immagine='" + immagine_post + '\'' +
                 ", data=" + data +
                 '}';
     }

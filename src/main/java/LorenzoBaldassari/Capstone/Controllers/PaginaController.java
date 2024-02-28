@@ -3,6 +3,7 @@ package LorenzoBaldassari.Capstone.Controllers;
 import LorenzoBaldassari.Capstone.Entities.Pagina;
 import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.BadRequestException;
+import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaModifyRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRespondDto;
 import LorenzoBaldassari.Capstone.Servicies.AuthService;
@@ -50,7 +51,7 @@ public class PaginaController {
     }
     @PutMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public PaginaRespondDto findByUUID(@RequestBody @Validated PaginaRequestDto body,
+    public PaginaRespondDto findByUUID(@RequestBody @Validated PaginaModifyRequestDto body,
                                        BindingResult bindingResult,
                                        @AuthenticationPrincipal Pagina currentUser){
         if (bindingResult.hasErrors()) {
