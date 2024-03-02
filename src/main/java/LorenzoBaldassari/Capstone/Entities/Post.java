@@ -1,6 +1,7 @@
 package LorenzoBaldassari.Capstone.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -30,8 +31,9 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "id_pagina_pubblicazione")
     private Pagina paginaPost;
-//    @OneToMany(mappedBy = "post")
-//    List<Commento> listaDiCommenti;
+    @JsonIgnore
+    @OneToMany(mappedBy = "post")
+    List<Commento> listaDiCommenti;
 
 
 

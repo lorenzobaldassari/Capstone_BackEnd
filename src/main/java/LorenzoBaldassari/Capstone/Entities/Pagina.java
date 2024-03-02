@@ -32,7 +32,9 @@ public class Pagina extends Proprietario{
     @OneToMany(mappedBy = "paginaPost")
     List<Post> listaDiPostDellaPagina;
     @JsonIgnore
-    @ManyToMany(mappedBy = "listaDiPagine")
+    @OneToMany(mappedBy = "pagina")
+    List<Commento> listaDiCommenti;
+
 
     public void setUtentePagina(Utente utentePagina) {
         this.utentePagina = utentePagina;

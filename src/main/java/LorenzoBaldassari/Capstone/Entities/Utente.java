@@ -41,8 +41,10 @@ public class Utente extends Proprietario implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "utentePost")
     List<Post> listaDiPost;
-//    @OneToMany(mappedBy = "utente")
-//    List<Commento> listaDiCommenti;
+    @JsonIgnore
+    @OneToMany(mappedBy = "utente")
+    List<Commento> listaDiCommenti;
+
 
 
 
