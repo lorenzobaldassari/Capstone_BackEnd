@@ -90,5 +90,18 @@ public class PostController {
         postService.deleteByAdmin(uuid);
     }
 
+    @PutMapping("/like/{uuid}")
+    @ResponseStatus(HttpStatus.OK)
+    public long like(@PathVariable UUID uuid,@AuthenticationPrincipal Proprietario currentUser){
+
+            return postService.like(uuid,currentUser);
+    }
+    @PutMapping("/dislike/{uuid}")
+    @ResponseStatus(HttpStatus.OK)
+    public long dislike(@PathVariable UUID uuid,@AuthenticationPrincipal Proprietario currentUser){
+
+            return postService.dislike(uuid,currentUser);
+    }
+
 }
 

@@ -6,9 +6,9 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Getter
 @Entity
 @Table(name = "commenti")
-@Getter
 public class Commento {
 
     @GeneratedValue
@@ -16,6 +16,7 @@ public class Commento {
     private UUID uuid;
     private String contenuto;
     private LocalDate data;
+//    private long likess;
 
 
     @ManyToOne
@@ -27,7 +28,9 @@ public class Commento {
     @ManyToOne
     @JoinColumn(name = "id_post")
     private Post post;
-
+//    public void setLikes(long likes) {
+//        this.likess = likes;
+//    }
 
     public void setContenuto(String contenuto) {
         this.contenuto = contenuto;
@@ -43,5 +46,9 @@ public class Commento {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public void setPagina(Pagina pagina) {
+        this.pagina = pagina;
     }
 }

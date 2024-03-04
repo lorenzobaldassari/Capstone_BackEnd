@@ -53,4 +53,14 @@ public class ExceptionHandler {
     public ErrorDto handleOwnerNotFoundException(Exception ex) {
         return new ErrorDto(ex.getMessage(), LocalDateTime.now());
     }
+    @org.springframework.web.bind.annotation.ExceptionHandler(AlreadyLikedExceptions.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDto handleAlreadyLikedException(Exception ex) {
+        return new ErrorDto(ex.getMessage(), LocalDateTime.now());
+    }
+    @org.springframework.web.bind.annotation.ExceptionHandler(ThereIsNotYourLikeExceptions.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDto handleThereIsNotYourLikeExceptions(Exception ex) {
+        return new ErrorDto(ex.getMessage(), LocalDateTime.now());
+    }
 }

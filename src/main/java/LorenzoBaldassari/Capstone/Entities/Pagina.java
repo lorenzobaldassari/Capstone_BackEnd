@@ -30,10 +30,13 @@ public class Pagina extends Proprietario{
 
     @JsonIgnore
     @OneToMany(mappedBy = "paginaPost")
-    List<Post> listaDiPostDellaPagina;
+    private List<Post> listaDiPostDellaPagina;
     @JsonIgnore
     @OneToMany(mappedBy = "pagina")
-    List<Commento> listaDiCommenti;
+    private List<Commento> listaDiCommenti;
+    @JsonIgnore
+    @ManyToMany (mappedBy = "likes_pagina")
+    private List<Post> listaDiPostsLikeatiDaPagina;
 
 
     public void setUtentePagina(Utente utentePagina) {
