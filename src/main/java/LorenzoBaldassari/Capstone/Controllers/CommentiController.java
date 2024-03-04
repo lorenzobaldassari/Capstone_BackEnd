@@ -80,6 +80,18 @@ public class CommentiController {
     public void delete (@PathVariable UUID uuid){
         commentiService.deleteByAmdin(uuid);
     }
+//    @PutMapping("/like/{uuid}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public long like(@PathVariable UUID uuid){
+//
+//        return commentiService.like(uuid);
+//    }
+//    @PutMapping("/dislike/{uuid}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public long dislike(@PathVariable UUID uuid){
+//
+//        return commentiService.dislike(uuid);
+//    }
 
 
 

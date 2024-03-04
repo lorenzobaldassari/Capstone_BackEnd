@@ -36,14 +36,17 @@ public class Utente extends Proprietario implements UserDetails {
     protected Ruolo ruolo;
 
     @JsonIgnore
+    @ManyToMany (mappedBy = "likes_utente")
+    private List<Post> listaDiPostsLikeatiDaUtente;
+    @JsonIgnore
     @OneToMany(mappedBy = "utentePagina")
-    List<Pagina> listaDiPagine;
+    private List<Pagina> listaDiPagine;
     @JsonIgnore
     @OneToMany(mappedBy = "utentePost")
-    List<Post> listaDiPost;
+    private List<Post> listaDiPost;
     @JsonIgnore
     @OneToMany(mappedBy = "utente")
-    List<Commento> listaDiCommenti;
+    private List<Commento> listaDiCommenti;
 
 
 
