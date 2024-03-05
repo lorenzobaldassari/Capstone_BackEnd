@@ -7,7 +7,9 @@ import LorenzoBaldassari.Capstone.Payloads.DocentePayloads.DocenteRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteModifyByAdminRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRespondDto;
+import LorenzoBaldassari.Capstone.Repositories.UtenteRepository;
 import LorenzoBaldassari.Capstone.Servicies.AuthService;
+import LorenzoBaldassari.Capstone.Servicies.CloudinaryService;
 import LorenzoBaldassari.Capstone.Servicies.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +32,11 @@ public class UtenteController {
     @Autowired
     private UtenteService utenteService;
     @Autowired
+    private UtenteRepository utenteRepository;
+    @Autowired
     private AuthService authService;
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -87,6 +95,31 @@ public class UtenteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMyself(@AuthenticationPrincipal Utente currentUser){
         utenteService.delete(currentUser.getUtente_uuid());
+    }
+
+
+
+    @PutMapping("/me/upload")
+    public String uploadImage(@RequestParam("UtenteImage") MultipartFile file,
+                                   @AuthenticationPrincipal Utente currentUser
+                                   ) throws IOException
+                                    {
+        String url = cloudinaryService.uploadPicture(file);
+        Utente utente = utenteService.findByUUID(currentUser.getUtente_uuid());
+        utente.setImmagine_di_profilo(url);
+        utenteRepository.save(utente);
+        return "ok immagine salvata " + url;
+    }
+    @PutMapping("/me/cover/upload")
+    public String uploadcoverImage(@RequestParam("UtenteCover") MultipartFile file,
+                                   @AuthenticationPrincipal Utente currentUser
+                                   ) throws IOException
+                                    {
+        String url = cloudinaryService.uploadPicture(file);
+        Utente utente = utenteService.findByUUID(currentUser.getUtente_uuid());
+        utente.setImmagine_di_copertina(url);
+        utenteRepository.save(utente);
+        return "ok immagine salvata " + url;
     }
 
 }

@@ -32,6 +32,7 @@ public class Utente extends Proprietario implements UserDetails {
     protected String email;
     protected String password;
     protected String immagine_di_profilo;
+    protected String immagine_di_copertina;
     @Enumerated(EnumType.STRING)
     protected Ruolo ruolo;
 
@@ -49,7 +50,9 @@ public class Utente extends Proprietario implements UserDetails {
     private List<Commento> listaDiCommenti;
 
 
-
+    public void setImmagine_di_copertina(String immagine_di_copertina) {
+        this.immagine_di_copertina = immagine_di_copertina;
+    }
 
     public void setNome(String nome) {
         this.nome = nome;

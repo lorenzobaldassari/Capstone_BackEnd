@@ -27,6 +27,10 @@ public class CommentiService {
         return commentoRepository.findAll();
     }
 
+
+    public List<Commento> findByPost(UUID id){
+        return commentoRepository.getCommentiCustom(id);
+    }
     public CommentiRespondDto create(CommentiRequestDto body, Proprietario proprietario, UUID uuid_post){
         Post post= postService.findByUUID(uuid_post);
         Commento commento= new Commento();
@@ -35,7 +39,7 @@ public class CommentiService {
         commento.setData(LocalDate.now());
         if(proprietario instanceof Utente){
             commento.setUtente((Utente) proprietario);
-        }else{
+        }else if(proprietario instanceof Pagina){
             commento.setPagina((Pagina) proprietario);
         }
         commentoRepository.save(commento);

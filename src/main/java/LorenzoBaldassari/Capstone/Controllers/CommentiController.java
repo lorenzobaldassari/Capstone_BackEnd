@@ -1,6 +1,7 @@
 package LorenzoBaldassari.Capstone.Controllers;
 
 import LorenzoBaldassari.Capstone.Entities.Commento;
+import LorenzoBaldassari.Capstone.Entities.Proprietario;
 import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.BadRequestException;
 import LorenzoBaldassari.Capstone.Payloads.CommentiPayloads.CommentiRequestDto;
@@ -25,6 +26,11 @@ public class CommentiController {
     private CommentiService commentiService;
 
 
+    @GetMapping("/posts/{uuid}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Commento> findByPost(@PathVariable UUID uuid){
+        return commentiService.findByPost(uuid);
+    }
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Commento> findAll(){
@@ -34,7 +40,7 @@ public class CommentiController {
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     public CommentiRespondDto post(@RequestBody @Validated CommentiRequestDto body,
-                                   @AuthenticationPrincipal Utente currentUser,
+                                   @AuthenticationPrincipal Proprietario currentUser,
                                    @RequestParam UUID uuid_post,
                                    BindingResult bindingResult){
         if(bindingResult.hasErrors()){

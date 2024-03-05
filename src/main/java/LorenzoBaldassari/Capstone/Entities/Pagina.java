@@ -18,6 +18,7 @@ public class Pagina extends Proprietario{
     private String titolo;
     private String descrizione;
     private String immagine;
+    private String immagine_di_copertina;
     private String link_sito;
     private String email;
     @JsonIgnore
@@ -38,6 +39,9 @@ public class Pagina extends Proprietario{
     @ManyToMany (mappedBy = "likes_pagina")
     private List<Post> listaDiPostsLikeatiDaPagina;
 
+    public void setImmagine_di_copertina(String immagine_di_copertina) {
+        this.immagine_di_copertina = immagine_di_copertina;
+    }
 
     public void setUtentePagina(Utente utentePagina) {
         this.utentePagina = utentePagina;

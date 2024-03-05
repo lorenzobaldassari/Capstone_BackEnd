@@ -10,13 +10,13 @@ import java.util.UUID;
 
 public interface PostRepository extends JpaRepository<Post, UUID> {
     @Query(
-            value = "SELECT * FROM post p INNER JOIN utenti u on p.id_utente_pubblicazione=u.utente_uuid "+
+            value = "SELECT * FROM posts p INNER JOIN utenti u on p.id_utente_pubblicazione=u.utente_uuid "+
             "WHERE u.utente_uuid=?1",
             nativeQuery = true)
     List<Post> getPostCustom(UUID uuid);
 
     @Query(
-            value = "SELECT * FROM post p INNER JOIN pagine a on p.id_pagina_pubblicazione=a.id WHERE a.id=?1",
+            value = "SELECT * FROM posts p INNER JOIN pagine a on p.id_pagina_pubblicazione=a.id WHERE a.id=?1",
             nativeQuery = true)
     List<Post> getPostCustomPagine(UUID id);
 }

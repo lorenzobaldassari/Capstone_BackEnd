@@ -13,8 +13,11 @@ public class Commento {
 
     @GeneratedValue
     @Id
+    @Column(name = "uuid_commento")
     private UUID uuid;
+    @Column(name = "uuid_commento_commento")
     private String contenuto;
+    @Column(name = "data_commento")
     private LocalDate data;
 //    private long likess;
 

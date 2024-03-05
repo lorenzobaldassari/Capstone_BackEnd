@@ -6,7 +6,9 @@ import LorenzoBaldassari.Capstone.Exceptions.BadRequestException;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaModifyRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRespondDto;
+import LorenzoBaldassari.Capstone.Repositories.PaginaRepositoy;
 import LorenzoBaldassari.Capstone.Servicies.AuthService;
+import LorenzoBaldassari.Capstone.Servicies.CloudinaryService;
 import LorenzoBaldassari.Capstone.Servicies.PaginaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +31,11 @@ public class PaginaController {
     private PaginaService paginaService;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private PaginaRepositoy paginaRepositoy;
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -73,6 +82,29 @@ public class PaginaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByAdmin(@PathVariable UUID uuid){
         paginaService.deleteByAdmin(uuid);
+    }
+
+    @PutMapping("/me/upload")
+    public String uploadImage(@RequestParam("PaginaImage") MultipartFile file,
+                                   @AuthenticationPrincipal Pagina currentUser
+    ) throws IOException
+    {
+        String url = cloudinaryService.uploadPicture(file);
+        Pagina pagina = paginaService.findByUUID(currentUser.getId());
+        pagina.setImmagine(url);
+        paginaRepositoy.save(pagina);
+        return "ok immagine salvata " + url;
+    }
+    @PutMapping("/me/cover/upload")
+    public String uploadCoverImage(@RequestParam("CoverImage") MultipartFile file,
+                                   @AuthenticationPrincipal Pagina currentUser
+    ) throws IOException
+    {
+        String url = cloudinaryService.uploadPicture(file);
+        Pagina pagina = paginaService.findByUUID(currentUser.getId());
+        pagina.setImmagine_di_copertina(url);
+        paginaRepositoy.save(pagina);
+        return "ok immagine salvata " + url;
     }
 
 
