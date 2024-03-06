@@ -11,6 +11,7 @@ import LorenzoBaldassari.Capstone.Servicies.AuthService;
 import LorenzoBaldassari.Capstone.Servicies.CloudinaryService;
 import LorenzoBaldassari.Capstone.Servicies.PaginaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,9 +40,11 @@ public class PaginaController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Pagina> findAll(){
-        authService.test();
-        return paginaService.findAll();
+    public Page<Pagina> findAll(@RequestParam(defaultValue = "0")int page,
+                                @RequestParam(defaultValue = "15") int size,
+                                @RequestParam(defaultValue = "titolo") String orderBy,
+                                @RequestParam(defaultValue = "") String titolo){
+        return paginaService.getAll(page,size,orderBy,titolo);
 
     }
 

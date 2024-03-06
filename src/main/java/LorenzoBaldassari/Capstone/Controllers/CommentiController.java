@@ -8,6 +8,7 @@ import LorenzoBaldassari.Capstone.Payloads.CommentiPayloads.CommentiRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.CommentiPayloads.CommentiRespondDto;
 import LorenzoBaldassari.Capstone.Servicies.CommentiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,13 +29,19 @@ public class CommentiController {
 
     @GetMapping("/posts/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Commento> findByPost(@PathVariable UUID uuid){
-        return commentiService.findByPost(uuid);
+    public Page<Commento> findByPost(@PathVariable UUID uuid,
+                                     @RequestParam(defaultValue = "0")int page,
+                                     @RequestParam(defaultValue = "3") int size,
+                                     @RequestParam(defaultValue = "data_commento") String orderBy){
+
+        return commentiService.findByPost(uuid,page,size,orderBy);
     }
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Commento> findAll(){
-        return commentiService.findAll();
+    public Page<Commento> findAll(@RequestParam(defaultValue = "0")int page,
+                                  @RequestParam(defaultValue = "3") int size,
+                                  @RequestParam(defaultValue = "data") String orderBy){
+        return commentiService.findAll(page,size,orderBy);
     }
 
     @PostMapping()

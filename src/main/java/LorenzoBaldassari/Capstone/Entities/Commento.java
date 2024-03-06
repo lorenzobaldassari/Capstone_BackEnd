@@ -18,7 +18,7 @@ public class Commento {
     @Column(name = "uuid_commento_commento")
     private String contenuto;
     @Column(name = "data_commento")
-    private LocalDate data;
+    private LocalDate dataCommento;
 //    private long likess;
 
 
@@ -40,7 +40,7 @@ public class Commento {
     }
 
     public void setData(LocalDate data) {
-        this.data = data;
+        this.dataCommento = data;
     }
 
     public void setUtente(Utente utente) {

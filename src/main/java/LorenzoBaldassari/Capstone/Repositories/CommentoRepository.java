@@ -2,6 +2,8 @@ package LorenzoBaldassari.Capstone.Repositories;
 
 import LorenzoBaldassari.Capstone.Entities.Commento;
 import LorenzoBaldassari.Capstone.Entities.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,5 +14,5 @@ public interface CommentoRepository extends JpaRepository<Commento, UUID> {
     @Query(
             value = "SELECT * FROM commenti c INNER JOIN posts p on c.id_post=p.uuid WHERE c.id_post=?1",
             nativeQuery = true)
-    List<Commento> getCommentiCustom(UUID id);
+    Page<Commento> getCommentiCustom(UUID id, Pageable pageable);
 }

@@ -8,6 +8,10 @@ import LorenzoBaldassari.Capstone.Payloads.CommentiPayloads.CommentiRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.CommentiPayloads.CommentiRespondDto;
 import LorenzoBaldassari.Capstone.Repositories.CommentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,13 +27,15 @@ public class CommentiService {
     private UtenteService utenteService;
     @Autowired
     private PostService postService;
-    public List<Commento> findAll(){
-        return commentoRepository.findAll();
+    public Page<Commento> findAll(int page, int size, String orderBy){
+        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy).descending());
+        return commentoRepository.findAll(pageable);
     }
 
 
-    public List<Commento> findByPost(UUID id){
-        return commentoRepository.getCommentiCustom(id);
+    public Page<Commento> findByPost(UUID id,int page, int size, String orderBy){
+        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy).descending());
+        return commentoRepository.getCommentiCustom(id,pageable);
     }
     public CommentiRespondDto create(CommentiRequestDto body, Proprietario proprietario, UUID uuid_post){
         Post post= postService.findByUUID(uuid_post);

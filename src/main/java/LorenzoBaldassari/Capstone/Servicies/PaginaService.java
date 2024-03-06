@@ -1,5 +1,6 @@
 package LorenzoBaldassari.Capstone.Servicies;
 import LorenzoBaldassari.Capstone.Entities.Pagina;
+import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.EmailAlreadyInDbException;
 import LorenzoBaldassari.Capstone.Exceptions.ItemNotFoundException;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaModifyRequestDto;
@@ -7,6 +8,10 @@ import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PaginaPayloads.PaginaRespondDto;
 import LorenzoBaldassari.Capstone.Repositories.PaginaRepositoy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +24,13 @@ public class PaginaService {
     private PaginaRepositoy paginaRepositoy;
 
 
-    public List<Pagina> findAll(){
-        return paginaRepositoy.findAll();
+//    public Page<Pagina> findAll(int page, int size, String orderBy){
+//        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
+//        return paginaRepositoy.findAll(pageable);
+//    }
+    public Page<Pagina> getAll(int page, int size, String orderBy, String titolo){
+        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
+        return paginaRepositoy.findByTitoloContainingIgnoreCase(titolo,pageable);
     }
 
 

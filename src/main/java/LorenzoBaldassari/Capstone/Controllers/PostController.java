@@ -30,18 +30,27 @@ public class PostController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Post> getAll(){
-        return postService.findAll();
+    public Page<Post> getAll(@RequestParam(defaultValue = "0")int page,
+                             @RequestParam(defaultValue = "10") int size,
+                             @RequestParam(defaultValue = "data") String orderBy){
+        return postService.findAll(page,size,orderBy);
     }
     @GetMapping("/utenti")
     @ResponseStatus(HttpStatus.OK)
-    public List<Post> getAll(@RequestParam(defaultValue = "")UUID uuid){
-        return postService.findAllUtenti(uuid);
+    public Page<Post> getAll(@RequestParam(defaultValue = "")UUID uuid,
+                             @RequestParam(defaultValue = "0")int page,
+                             @RequestParam(defaultValue = "4") int size,
+                             @RequestParam(defaultValue = "data") String orderBy){
+        return postService.findAllUtenti(uuid,page,size,orderBy);
     }
     @GetMapping("/pagine")
     @ResponseStatus(HttpStatus.OK)
-    public List<Post> getAllPagine(@RequestParam(defaultValue = "")UUID id){
-        return postService.findAllPagine(id);
+    public Page<Post> getAllPagine(@RequestParam(defaultValue = "")UUID id,
+                                   @RequestParam(defaultValue = "0")int page,
+                                   @RequestParam(defaultValue = "4") int size,
+                                   @RequestParam(defaultValue = "data") String orderBy){
+
+        return postService.findAllPagine(id,page,size,orderBy);
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

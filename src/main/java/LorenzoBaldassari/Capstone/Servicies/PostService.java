@@ -9,6 +9,10 @@ import LorenzoBaldassari.Capstone.Payloads.PostPayloads.PostRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.PostPayloads.PostRespondDto;
 import LorenzoBaldassari.Capstone.Repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,14 +27,17 @@ public class PostService {
     private PostRepository postRepository;
 
 
-    public List<Post> findAllUtenti(UUID uuid){
-        return postRepository.getPostCustom(uuid);
+    public Page<Post> findAllUtenti(UUID uuid,int page, int size, String orderBy){
+        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy).descending());
+        return postRepository.getPostCustom(uuid,pageable);
     }
-    public List<Post> findAllPagine(UUID id){
-        return postRepository.getPostCustomPagine(id);
+    public Page<Post> findAllPagine(UUID id,int page, int size, String orderBy){
+        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy).descending());
+        return postRepository.getPostCustomPagine(id,pageable);
     }
-    public List<Post> findAll(){
-        return postRepository.findAll();
+    public Page<Post> findAll(int page, int size, String orderBy){
+        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy).descending());
+        return postRepository.findAll(pageable);
     }
 
     public PostRespondDto create(PostRequestDto body, Proprietario proprietario){

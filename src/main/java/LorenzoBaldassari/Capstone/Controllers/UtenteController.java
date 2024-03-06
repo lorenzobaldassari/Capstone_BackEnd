@@ -12,6 +12,7 @@ import LorenzoBaldassari.Capstone.Servicies.AuthService;
 import LorenzoBaldassari.Capstone.Servicies.CloudinaryService;
 import LorenzoBaldassari.Capstone.Servicies.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,10 +39,21 @@ public class UtenteController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
+//    @GetMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    public Page<Utente> getAll(@RequestParam(defaultValue = "0")int page,
+//                               @RequestParam(defaultValue = "15") int size,
+//                               @RequestParam(defaultValue = "nome") String orderBy){
+//        return utenteService.getAll(page,size,orderBy);
+//    }
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Utente> getAll(){
-        return utenteService.getAll();
+    public Page<Utente> findBynomeAndCognomeLike( @RequestParam(defaultValue = "0")int page,
+                                                  @RequestParam(defaultValue = "15") int size,
+                                                  @RequestParam(defaultValue = "nome") String orderBy,
+                                                  @RequestParam(defaultValue = "") String nome,
+                                                  @RequestParam(defaultValue = "") String cognome){
+        return utenteService.getAll(page,size,orderBy,nome,cognome);
     }
 
     @GetMapping("/{uuid}")

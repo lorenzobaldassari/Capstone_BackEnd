@@ -1,15 +1,18 @@
 package LorenzoBaldassari.Capstone.Servicies;
 
-import LorenzoBaldassari.Capstone.Entities.Enum.Ruolo;
 import LorenzoBaldassari.Capstone.Entities.Utente;
 import LorenzoBaldassari.Capstone.Exceptions.EmailAlreadyInDbException;
 import LorenzoBaldassari.Capstone.Exceptions.ItemNotFoundException;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteModifyByAdminRequestDto;
-import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRequestDto;
 import LorenzoBaldassari.Capstone.Payloads.UtentePayloads.UtenteRespondDto;
 import LorenzoBaldassari.Capstone.Repositories.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,10 +23,14 @@ public class UtenteService {
     @Autowired
     private UtenteRepository utenteRepository;
 
-    public List<Utente> getAll(){
-        return utenteRepository.findAll();
+//    public Page<Utente> getAll(int page, int size, String orderBy){
+//        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
+//        return utenteRepository.findAll(pageable);
+//    }
+    public Page<Utente> getAll(int page, int size, String orderBy,String nome,String cognome){
+        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
+        return utenteRepository.findByNomeContainingAndCognomeContainingIgnoreCase(nome,cognome,pageable);
     }
-
 
 
     public Utente findByEmail(String email){
