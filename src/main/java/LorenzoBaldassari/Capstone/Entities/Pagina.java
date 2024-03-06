@@ -21,6 +21,10 @@ public class Pagina extends Proprietario{
     private String immagine_di_copertina;
     private String link_sito;
     private String email;
+    private String provincia;
+    private String citta;
+    private String indirizzo;
+
     @JsonIgnore
     private String password;
 
@@ -41,6 +45,18 @@ public class Pagina extends Proprietario{
 
     public void setImmagine_di_copertina(String immagine_di_copertina) {
         this.immagine_di_copertina = immagine_di_copertina;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public void setCitta(String citta) {
+        this.citta = citta;
+    }
+
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo = indirizzo;
     }
 
     public void setUtentePagina(Utente utentePagina) {

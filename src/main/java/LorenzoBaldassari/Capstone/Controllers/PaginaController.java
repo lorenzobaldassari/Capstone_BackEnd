@@ -43,8 +43,10 @@ public class PaginaController {
     public Page<Pagina> findAll(@RequestParam(defaultValue = "0")int page,
                                 @RequestParam(defaultValue = "15") int size,
                                 @RequestParam(defaultValue = "titolo") String orderBy,
-                                @RequestParam(defaultValue = "") String titolo){
-        return paginaService.getAll(page,size,orderBy,titolo);
+                                @RequestParam(defaultValue = "") String titolo,
+                                @RequestParam(defaultValue = "") String citta,
+                                @RequestParam(defaultValue = "") String provincia){
+        return paginaService.getAll(page,size,orderBy,titolo,citta,provincia);
 
     }
 

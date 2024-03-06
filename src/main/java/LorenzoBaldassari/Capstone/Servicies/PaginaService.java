@@ -28,9 +28,9 @@ public class PaginaService {
 //        Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
 //        return paginaRepositoy.findAll(pageable);
 //    }
-    public Page<Pagina> getAll(int page, int size, String orderBy, String titolo){
+    public Page<Pagina> getAll(int page, int size, String orderBy, String titolo,String citta, String provincia){
         Pageable pageable= PageRequest.of(page,size, Sort.by(orderBy));
-        return paginaRepositoy.findByTitoloContainingIgnoreCase(titolo,pageable);
+        return paginaRepositoy.findByTitoloContainingIgnoreCaseAndCittaContainingIgnoreCaseAndProvinciaContainingIgnoreCase(titolo,citta,provincia,pageable);
     }
 
 

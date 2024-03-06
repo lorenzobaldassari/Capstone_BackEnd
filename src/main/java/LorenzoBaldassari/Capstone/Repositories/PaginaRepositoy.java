@@ -14,5 +14,5 @@ import java.util.UUID;
 public interface PaginaRepositoy extends JpaRepository<Pagina,UUID> {
     Optional<Pagina> findByEmail(String email);
 
-    Page<Pagina> findByTitoloContainingIgnoreCase(String titolo, Pageable pageable);
+    Page<Pagina> findByTitoloContainingIgnoreCaseAndCittaContainingIgnoreCaseAndProvinciaContainingIgnoreCase(String titolo,String citta,String provincia, Pageable pageable);
 }

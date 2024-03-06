@@ -10,6 +10,12 @@ public record PaginaRequestDto(
         String titolo,
         @NotNull(message="il campo non deve essere null")
         String descrizione,
+        @NotNull(message="il campo non deve essere null")
+        String provincia,
+        @NotNull(message="il campo non deve essere null")
+        String indirizzo,
+        @NotNull(message="il campo non deve essere null")
+        String citta,
         @Nullable
         String link_sito,
         @Email

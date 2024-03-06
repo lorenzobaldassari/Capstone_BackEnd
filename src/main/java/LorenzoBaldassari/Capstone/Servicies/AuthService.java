@@ -116,6 +116,9 @@ public class AuthService {
         pagina.setImmagine("https://cdn5.acolore.com/disegni/colori/201940/scuola-edifici-altri-edifici-1157248.jpg" );
         pagina.setImmagine_di_copertina("https://img.freepik.com/premium-vector/book-templates-books-blank-cover-open-closed-covers-empty-textbook-magazine-white-sheets-hardcover-catalog-mockup-perspective-view-library-bookstore-vector-isolated-illustration_176411-4177.jpg");
         pagina.setLink_sito(body.link_sito());
+        pagina.setCitta(body.citta());
+        pagina.setProvincia(body.provincia());
+        pagina.setIndirizzo(body.indirizzo());
         pagina.setUtentePagina(currentUser);
         pagina.setEmail(body.email());
         pagina.setPassword(bcrypt.encode(body.password()));
