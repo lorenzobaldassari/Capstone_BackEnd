@@ -23,12 +23,13 @@ public class CreateAdminRunner implements CommandLineRunner {
         Optional<Utente> checkMail= utenteRepository.findByEmail("admin1@gmail.com");
         if(checkMail.isEmpty()){
         Utente utente = new Utente();
-        utente.setNome("admin1");
-        utente.setCognome("admin1");
+        utente.setNome("Administrator1");
+        utente.setCognome("");
         utente.setRuolo(Ruolo.ADMIN);
         utente.setPassword(bcrypt.encode("admin1"));
         utente.setEmail("admin1@gmail.com");
-        utente.setImmagine_di_profilo("https://ui-avatars.com/api/?name=" + utente.getNome() + "+" + utente.getCognome());
+        utente.setImmagine_di_copertina("https://img.freepik.com/premium-vector/book-templates-books-blank-cover-open-closed-covers-empty-textbook-magazine-white-sheets-hardcover-catalog-mockup-perspective-view-library-bookstore-vector-isolated-illustration_176411-4177.jpg");
+        utente.setImmagine_di_profilo("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
         utenteRepository.save(utente);
             System.out.println("Admin creato!");
         }else{

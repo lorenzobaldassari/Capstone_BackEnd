@@ -41,7 +41,7 @@ public class PaginaController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<Pagina> findAll(@RequestParam(defaultValue = "0")int page,
-                                @RequestParam(defaultValue = "15") int size,
+                                @RequestParam(defaultValue = "12") int size,
                                 @RequestParam(defaultValue = "titolo") String orderBy,
                                 @RequestParam(defaultValue = "") String titolo,
                                 @RequestParam(defaultValue = "") String citta,

@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record PostRequestDto(
-        @NotNull(message="il campo non deve essere null")
         String titolo,
         @NotNull(message="il campo non deve essere null")
         String contenuto,

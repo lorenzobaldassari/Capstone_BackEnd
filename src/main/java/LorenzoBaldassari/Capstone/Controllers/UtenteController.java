@@ -49,7 +49,7 @@ public class UtenteController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<Utente> findBynomeAndCognomeLike( @RequestParam(defaultValue = "0")int page,
-                                                  @RequestParam(defaultValue = "15") int size,
+                                                  @RequestParam(defaultValue = "12") int size,
                                                   @RequestParam(defaultValue = "nome") String orderBy,
                                                   @RequestParam(defaultValue = "") String nome,
                                                   @RequestParam(defaultValue = "") String cognome){

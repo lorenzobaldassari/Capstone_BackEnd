@@ -46,7 +46,7 @@ public class Post {
     @JoinColumn(name = "id_pagina_pubblicazione")
     private Pagina paginaPost;
     @JsonIgnore
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
     private List<Commento> listaDiCommenti;
 
     public void setLikes_utente(Utente utente) {
